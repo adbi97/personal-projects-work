@@ -27,7 +27,7 @@ SELECT count(distinct director.id) as director_no, count(distinct person.id) as 
 FROM person, director
 ) AS counters; 
 
--- was confused whether the question asked for scene description or role description. For this question I assumed role description but if it was asking for scene description the select statement should read "SELECT scene.scene_no, scene.description".
+
 SELECT DISTINCT scene.scene_no, role.description
 FROM scene 
 INNER JOIN appearance ON scene.title = appearance.title
