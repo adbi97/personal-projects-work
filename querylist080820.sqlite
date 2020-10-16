@@ -1,0 +1,88 @@
+
+SELECT title, production_year
+FROM movie
+WHERE title LIKE '%Alien%';
+
+
+SELECT id, first_name, last_name
+FROM person
+ORDER BY year_born
+LIMIT 1;
+
+
+SELECT person.id, 
+person.first_name,
+person.last_name,
+(year_of_award - year_born) AS age_when_awarded
+FROM person INNER JOIN writer 
+ON person.id = writer.id
+INNER JOIN writer_award 
+ON writer_award.id = writer.id
+WHERE ((year_of_award - year_born) >= 50) AND (writer_award.award_name = 'Oscar');
+
+
+SELECT ROUND((((director_no)::float / (person_no)::float) *100)::numeric, 2) AS director_percent
+FROM (
+SELECT count(distinct director.id) as director_no, count(distinct person.id) as person_no
+FROM person, director
+) AS counters; 
+
+-- was confused whether the question asked for scene description or role description. For this question I assumed role description but if it was asking for scene description the select statement should read "SELECT scene.scene_no, scene.description".
+SELECT DISTINCT scene.scene_no, role.description
+FROM scene 
+INNER JOIN appearance ON scene.title = appearance.title
+INNER JOIN role ON role.title = scene.title
+WHERE scene.scene_no < 6 AND scene.title = 'The Birds'
+ORDER BY scene.scene_no;
+
+SELECT movie_award.title, movie_award.production_year, person.first_name, person.last_name
+FROM movie_award
+INNER JOIN director ON movie_award.title = director.title
+INNER JOIN person ON person.id = director.id
+WHERE movie_award.award_name = 'NYFCC Award';
+
+
+SELECT title, production_year, year_of_award, COUNT(year_of_award)
+FROM actor_award
+WHERE result = 'won'
+GROUP BY year_of_award, title, production_year
+HAVING COUNT(year_of_award) >= 2;
+
+
+SELECT distinct actor_id, actor_award.award_name, actor_award.year_of_award, actor_award.category 
+FROM (SELECT count(person.id) as nominations, person.id as actor_id 
+FROM actor_award INNER JOIN role ON actor_award.description = role.description
+INNER JOIN person ON role.id = person.id
+WHERE actor_award.result = 'nominated'
+GROUP BY person.id
+HAVING count(person.id)>=2) as listofnoms
+INNER JOIN role on actor_id = role.id 
+INNER JOIN actor_award on role.description = actor_award.description
+WHERE actor_id NOT IN 
+(SELECT person.id FROM actor_award
+INNER JOIN role on actor_award.description = role.description
+INNER JOIN person on role.id = person.id
+WHERE actor_award.result = 'won');
+
+
+SELECT person.first_name, person.last_name, count(role.id) FROM role
+INNER JOIN movie_award on movie_award.title = role.title
+INNER JOIN person on role.id = person.id
+WHERE movie_award.title IN (SELECT title FROM movie_award WHERE result = 'won') GROUP BY person.first_name, person.last_name
+ORDER BY count(role.id) DESC
+LIMIT 1; 
+
+
+--list of directors that directed a movie and also wrote it, minus the list of directors that have at some point directed a movie AND NOT written it.
+
+SELECT DISTINCT person.id, person.first_name, person.last_name
+FROM director
+INNER JOIN person ON person.id = director.id
+INNER JOIN writer ON writer.id = person.id
+WHERE director.title = writer.title AND director.id NOT IN
+(SELECT director.id FROM director
+INNER JOIN movie on director.title = movie.title
+WHERE director.id IN (SELECT director.id FROM director INNER JOIN movie on director.title = movie.title)
+AND director.id NOT IN (select writer.id FROM writer INNER JOIN movie on movie.title = writer.title));
+
+
