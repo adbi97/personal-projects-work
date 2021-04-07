@@ -1,3 +1,5 @@
+# SQL Queries https://github.com/adbi97/personal-projects-work/blob/master/twitch_data.sqlite
+
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
