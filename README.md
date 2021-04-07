@@ -1,4 +1,4 @@
-#  personal-projects-work - assortment of small projects I have completed.
+#  personal-projects-work - assortment of small/side projects.
 
 # 1) Canberra Weather Neural Network
     Used R to process and create a neural network with historical weather data in Canberra.
