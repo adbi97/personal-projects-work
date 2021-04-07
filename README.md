@@ -1,13 +1,11 @@
-#  personal-projects-work
-
-#  Assortment of small projects I have completed.
+#  personal-projects-work - assortment of small projects I have completed.
 
 # 1) Canberra Weather Neural Network
     Used R to process and create a neural network with historical weather data in Canberra.
     Model successfully classified rain / no rain using several different features.
 
 #  2) Movie Awards Database SQL Queries
-     Range of queries to identify subgroups within the dataset, such as movie directors who had directed 10+ films but never won an award etc.
+    Range of queries to identify subgroups within the dataset, such as movie directors who had directed 10+ films but never won an award etc.
 
 # 3) Twitch Data + Visualisation 
     Used SQL to analyse viewership data provided by Twitch, finding key trends and usage statistics.
